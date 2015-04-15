@@ -96,7 +96,6 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "Yo: " + coffeeResourcesList.get(position).name, Toast.LENGTH_SHORT).show();
                 mListener.onCoffeeSelected(coffeeResourcesList.get(position).id);
             }
         }));

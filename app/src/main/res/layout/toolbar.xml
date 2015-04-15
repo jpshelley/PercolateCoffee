@@ -7,4 +7,12 @@
     android:background="?attr/colorPrimary"
     android:minHeight="?attr/actionBarSize"
     app:theme="@style/ThemeOverlay.AppCompat.Dark"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:src="@drawable/drip_white"/>
+
+</android.support.v7.widget.Toolbar>
