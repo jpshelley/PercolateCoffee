@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Theme Colors -->
+    <color name="perc_orange">#F16421</color>
+    <color name="perc_gray">#AAAAAA</color>
+    <color name="perc_gray_dark">#666666</color>
+
+    <!-- Material Design -->
+    <color name="material_blue_grey_100">#cfd8dc</color>
+    <color name="material_red_500">#F44336</color>
+    <color name="material_red_A200">#ff5177</color>
+    <color name="material_red_A400">#ff2d6f</color>
+    <color name="trans75_material_pink_400">#BFec407a</color>
+    <color name="trans75_material_pink_500">#BFe91e63</color>
+    <color name="trans95_material_pink_500">#f2e91e63</color>
+    <color name="material_pink_100">#f8bbd0</color>
+    <color name="material_pink_200">#f48fb1</color>
+    <color name="material_pink_300">#f06292</color>
+    <color name="material_pink_400">#ec407a</color>
+    <color name="material_pink_500">#e91e63</color>
+    <color name="material_pink_A400">#f50057</color>
+    <color name="material_pink_A700">#c2185b</color>
+    <color name="material_indigo_500">#3F51B5</color>
+    <color name="trans75_material_light_blue_400">#BF29b6f6</color>
+    <color name="material_light_blue_100">#b3e5fc</color>
+    <color name="material_light_blue_400">#29b6f6</color>
+    <color name="material_light_blue_500">#03a9f4</color>
+    <color name="material_light_blue_A700">#0091ea</color>
+    <color name="material_teal_50">#e0f2f1</color>
+    <color name="material_teal_100">#b2dfdb</color>
+    <color name="material_teal_200">#80cbc4</color>
+    <color name="material_teal_300">#4db6ac</color>
+    <color name="material_teal_400">#26a69a</color>
+    <color name="material_teal_500">#009688</color>
+    <color name="material_teal_600">#00897b</color>
+    <color name="material_teal_700">#00796b</color>
+    <color name="material_teal_800">#00695c</color>
+    <color name="material_teal_900">#004d40</color>
+    <color name="material_teal_A700">#00bfa5</color>
+    <color name="material_blue_grey_700">#455a64</color>
+    <color name="material_blue_grey_800">#37474f</color>
+    <color name="material_blue_grey_900">#263238</color>
+    <color name="trans_material_teal_500">#f2009688</color>
+    <color name="trans25_material_blue_grey_900">#40263238</color>
+    <color name="trans50_material_blue_grey_900">#80263238</color>
+    <color name="trans95_material_blue_grey_900">#f2263238</color>
+
+    <!-- Text Colors -->
+    <color name="text_black_87">#DE000000</color>
+    <color name="text_black_75">#BF000000</color>
+    <color name="text_black_54">#8A000000</color>
+    <color name="text_white_87">#DEFFFFFF</color>
+    <color name="text_white_75">#BFFFFFFF</color>
+    <color name="text_white_54">#8AFFFFFF</color>
+    <color name="text_link_87">#DE03a9f4</color>
+    <color name="text_link_54">#8A03a9f4</color>
+    <color name="text_warning_87">#DEF44336</color>
+    <color name="text_warning_54">#8AF44336</color>
+
+</resources>
