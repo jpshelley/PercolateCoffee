@@ -3,8 +3,9 @@
     android:id="@+id/feed_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="8dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -14,6 +15,13 @@
         android:layout_margin="4dp"
         android:textColor="@color/text_black_87"
         android:textSize="24sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/perc_gray"/>
 
     <TextView
         android:id="@+id/tv_coffee_desc"
@@ -30,5 +38,13 @@
         android:layout_margin="4dp"
         android:layout_gravity="start"
         android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_coffee_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textColor="@color/text_black_54"
+        android:textSize="16sp"/>
 
 </LinearLayout>

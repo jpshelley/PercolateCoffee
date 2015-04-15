@@ -1,5 +1,6 @@
 package com.shells.percolatecoffee.android.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class CoffeeListActivity extends ActionBarActivity implements CoffeeListF
     private void setToolbar() {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Test");
+            getSupportActionBar().setTitle("Coffee");
         }
     }
 
@@ -63,6 +64,8 @@ public class CoffeeListActivity extends ActionBarActivity implements CoffeeListF
 
     @Override
     public void onCoffeeSelected(String id) {
-
+        Intent intent = new Intent(this, CoffeeDetailActivity.class);
+        intent.putExtra(CoffeeDetailActivity.ID, id);
+        startActivity(intent);
     }
 }

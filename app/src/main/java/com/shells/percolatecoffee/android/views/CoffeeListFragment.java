@@ -1,7 +1,6 @@
 package com.shells.percolatecoffee.android.views;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shells.percolatecoffee.BuildConfig;
 import com.shells.percolatecoffee.R;
 import com.shells.percolatecoffee.android.adapters.CoffeeListAdapter;
+import com.shells.percolatecoffee.android.adapters.DividerItemDecoration;
+import com.shells.percolatecoffee.android.adapters.RecyclerItemClickListener;
 import com.shells.percolatecoffee.api.MemberClient;
-import com.shells.percolatecoffee.api.models.CoffeeListResource;
 import com.shells.percolatecoffee.api.models.CoffeeResource;
 
 import java.util.ArrayList;
@@ -41,22 +41,19 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
 
     private OnFragmentInteractionListener mListener;
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
-    private SwipeRefreshLayout mSwipeLayout;
     private static int retroRetryCount = 0;
 
-    ArrayList<CoffeeListResource> coffeeListResources;
-    ArrayList<CoffeeResource> coffeeResources;
-    Boolean newPageLoaded;
+    ArrayList<CoffeeResource> coffeeResourcesList;
 
     /* UI */
     View view;
-
-    ProgressBar progressBar;
     TextView textAction;
+    SwipeRefreshLayout mSwipeLayout;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public static CoffeeListFragment newInstance(String param1, String param2) {
         CoffeeListFragment fragment = new CoffeeListFragment();
@@ -79,22 +76,15 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_coffee_list, container, false);
-        mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
         textAction = (TextView) view.findViewById(R.id.text_empty);
-
-        // Set the adapter
+        mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        //mListView.addFooterView(footer);
-
         init();
         return view;
     }
 
     private void init() {
-        coffeeListResources = new ArrayList<>();
-        coffeeResources = new ArrayList<>();
-        newPageLoaded = false;
+        coffeeResourcesList = new ArrayList<>();
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.material_teal_500, R.color.material_teal_100, R.color.material_teal_400, R.color.material_teal_A700);
 
@@ -102,25 +92,26 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getActivity(), "Yo: " + coffeeResourcesList.get(position).name, Toast.LENGTH_SHORT).show();
+                mListener.onCoffeeSelected(coffeeResourcesList.get(position).id);
+            }
+        }));
 
-        mAdapter = new CoffeeListAdapter(getActivity(), coffeeResources);
+        mAdapter = new CoffeeListAdapter(getActivity(), coffeeResourcesList);
         mRecyclerView.setAdapter(mAdapter);
-//        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
-//        itemClick.setOnItemClickListener(clickListener);
-        //mRecyclerView.setOnScrollListener(scrollListener);
 
         onRefresh();
     }
 
     private void getCoffeeAll(final String pageNumber) {
-        MemberClient.getApiClient().getCoffeeAll(BuildConfig.API_TOKEN, new Callback<CoffeeListResource>() {
+        MemberClient.getApiClient().getCoffeeAll(BuildConfig.API_TOKEN, new Callback<ArrayList<CoffeeResource>>() {
             @Override
-            public void success(CoffeeListResource coffeeListResource, Response response) {
-                // Add to the page lists
-                coffeeListResources.add(coffeeListResource);
-                // stash all the data in our backing store
-                coffeeResources.addAll(coffeeListResource.coffeeResources);
+            public void success(ArrayList<CoffeeResource> coffeeResources, Response response) {
+                coffeeResourcesList.addAll(coffeeResources);
                 // notify the adapter
                 mAdapter.notifyDataSetChanged();
                 mSwipeLayout.setRefreshing(false);
@@ -132,8 +123,6 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
                 } else {
                     textAction.setVisibility(View.GONE);
                 }
-                progressBar.setVisibility(View.GONE);
-                newPageLoaded = false;
             }
 
             @Override
@@ -147,7 +136,7 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
                         mSwipeLayout.setRefreshing(false);
                     }
                 } else {
-                    if (coffeeResources.isEmpty()) {
+                    if (coffeeResourcesList.isEmpty()) {
                         textAction.setVisibility(View.VISIBLE);
                     } else {
                         textAction.setVisibility(View.GONE);
@@ -163,14 +152,12 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                newPageLoaded = false;
-                coffeeListResources.clear();
-                coffeeResources.clear();
+                coffeeResourcesList.clear();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mAdapter.notifyDataSetChanged();
-                        textAction.setVisibility(View.GONE);
+                        textAction.setVisibility(View.VISIBLE);
                     }
                 });
                 getCoffeeAll("1");
@@ -208,7 +195,7 @@ public class CoffeeListFragment extends Fragment implements SwipeRefreshLayout.O
      * activity.
      */
     public interface OnFragmentInteractionListener {
-        public void onCoffeeSelected(String id);
+        void onCoffeeSelected(String id);
     }
 
 }

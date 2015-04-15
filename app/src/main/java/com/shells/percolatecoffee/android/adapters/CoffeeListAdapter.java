@@ -21,7 +21,7 @@ public class CoffeeListAdapter extends RecyclerView.Adapter<CoffeeListAdapter.Vi
     private Context context;
     private ArrayList<CoffeeResource> coffeeResources;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         LinearLayout content;
         TextView tvName;
         TextView tvDesc;
@@ -51,9 +51,9 @@ public class CoffeeListAdapter extends RecyclerView.Adapter<CoffeeListAdapter.Vi
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         CoffeeResource coffeeResource = coffeeResources.get(position);
         if (coffeeResource.image_url != null && !coffeeResource.image_url.equals("")) {
-            Picasso.with(context)
-                    .load(coffeeResource.image_url)
-                    .into(viewHolder.imgCoffee);
+                Picasso.with(context)
+                        .load(coffeeResource.image_url)
+                        .into(viewHolder.imgCoffee);
         } else {
             viewHolder.imgCoffee.setVisibility(View.GONE);
         }

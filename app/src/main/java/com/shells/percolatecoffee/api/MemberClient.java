@@ -1,13 +1,15 @@
 package com.shells.percolatecoffee.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shells.percolatecoffee.BuildConfig;
-import com.shells.percolatecoffee.api.models.CoffeeListResource;
+import com.shells.percolatecoffee.api.models.CoffeeResource;
+
+import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Path;
 
 public class MemberClient {
 
@@ -19,15 +21,15 @@ public class MemberClient {
 
     public interface PHQuizMemberClient {
 
-        /* PH Endpoints */
+        /* Coffee Endpoints */
         @GET("/coffee/")
-        void getCoffeeAll(@Header("Authorization") String token, Callback<CoffeeListResource> cb);
+        void getCoffeeAll(@Header("Authorization") String token, Callback<ArrayList<CoffeeResource>> cb);
+
+        @GET("/coffee/{coffeeId}/")
+        void getCoffee(@Header("Authorization") String token, @Path("coffeeId") String coffeeId, Callback<CoffeeResource> cb);
     }
 
     public static PHQuizMemberClient getApiClient() {
-        ObjectMapper mapper = new ObjectMapper();
-        JacksonConverter converter = new JacksonConverter(mapper);
-
         RestAdapter.LogLevel log;
         MemberClient.API_URL = BuildConfig.API_URL;
         if (BuildConfig.DEBUG) {
@@ -37,7 +39,7 @@ public class MemberClient {
         }
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setConverter(converter)
+                .setConverter(new retrofit.converter.JacksonConverter())
                 .setEndpoint(MemberClient.API_URL)
                 .setLogLevel(log)
                 .build();
